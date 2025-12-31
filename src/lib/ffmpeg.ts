@@ -212,6 +212,82 @@ export async function generateThumbnail(
 }
 
 /**
+ * Concatenate multiple video clips into one
+ */
+export async function concatenateVideos(
+  videoPaths: string[],
+  options: ProcessingOptions = {}
+): Promise<string> {
+  await ensureOutputDir();
+  const outputPath = generateOutputPath('reel');
+
+  // Create file list for concat demuxer
+  const fileListPath = `${OUTPUT_DIR}concat_list.txt`;
+  const fileListContent = videoPaths
+    .map((path) => `file '${path}'`)
+    .join('\n');
+
+  await FileSystem.writeAsStringAsync(fileListPath, fileListContent);
+
+  // Calculate total duration for progress
+  let totalDuration = 0;
+  for (const path of videoPaths) {
+    const info = await getVideoInfo(path);
+    totalDuration += info.duration;
+  }
+
+  const command = [
+    `-f concat`,
+    `-safe 0`,
+    `-i "${fileListPath}"`,
+    `-c copy`, // Fast copy without re-encoding
+    `"${outputPath}"`,
+  ].join(' ');
+
+  try {
+    return await executeFFmpeg(command, totalDuration, outputPath, options);
+  } finally {
+    // Cleanup file list
+    await FileSystem.deleteAsync(fileListPath, { idempotent: true });
+  }
+}
+
+/**
+ * Concatenate with re-encoding (for mixed codecs)
+ */
+export async function concatenateVideosWithReencode(
+  videoPaths: string[],
+  options: ProcessingOptions = {}
+): Promise<string> {
+  await ensureOutputDir();
+  const outputPath = generateOutputPath('reel');
+
+  // Create filter complex for concat
+  const inputs = videoPaths.map((p, i) => `-i "${p}"`).join(' ');
+  const filterInputs = videoPaths.map((_, i) => `[${i}:v][${i}:a]`).join('');
+
+  // Calculate total duration
+  let totalDuration = 0;
+  for (const path of videoPaths) {
+    const info = await getVideoInfo(path);
+    totalDuration += info.duration;
+  }
+
+  const command = [
+    inputs,
+    `-filter_complex "${filterInputs}concat=n=${videoPaths.length}:v=1:a=1[outv][outa]"`,
+    `-map "[outv]"`,
+    `-map "[outa]"`,
+    `-c:v libx264`,
+    `-preset fast`,
+    `-c:a aac`,
+    `"${outputPath}"`,
+  ].join(' ');
+
+  return executeFFmpeg(command, totalDuration, outputPath, options);
+}
+
+/**
  * Cancel all running FFmpeg sessions
  */
 export function cancelAllFFmpegSessions() {
