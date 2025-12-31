@@ -1,0 +1,639 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.claude/
+  .env.example
+app/
+  _layout.tsx
+  index.tsx
+src/
+  lib/
+    constants.ts
+    storage.ts
+  types/
+    index.ts
+.env.example
+.gitignore
+.repomixignore
+app.json
+babel.config.js
+CLAUDE.md
+global.css
+metro.config.js
+nativewind-env.d.ts
+package.json
+tailwind.config.js
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".claude/.env.example">
+# Claude Code - Global Environment Variables
+# Location: .claude/.env
+# Priority: LOWEST (overridden by skills/.env and skill-specific .env)
+# Scope: Project-wide configuration, global defaults
+# Setup: Copy to .claude/.env and configure
+
+# ============================================
+# Environment Variable Hierarchy
+# ============================================
+# Priority order (highest to lowest):
+# 1. process.env                    - Runtime environment (HIGHEST)
+# 2. .claude/skills/<skill>/.env    - Skill-specific overrides
+# 3. .claude/skills/.env            - Shared across all skills
+# 4. .claude/.env                   - Global defaults (this file, LOWEST)
+#
+# All skills use centralized resolver: ~/.claude/scripts/resolve_env.py
+# Debug hierarchy: python ~/.claude/scripts/resolve_env.py --show-hierarchy
+
+# ============================================
+# Claude Code Notification Hooks
+# ============================================
+# Discord Webhook URL (for Discord notifications)
+# Get from: Server Settings → Integrations → Webhooks → New Webhook
+DISCORD_WEBHOOK_URL=
+
+# Telegram Bot Token (for Telegram notifications)
+# Get from: @BotFather in Telegram
+TELEGRAM_BOT_TOKEN=
+
+# Telegram Chat ID (your chat ID or group ID)
+# Get from: https://api.telegram.org/bot<BOT_TOKEN>/getUpdates
+TELEGRAM_CHAT_ID=
+
+# ============================================
+# AI/ML API Keys (Global Defaults)
+# ============================================
+# Google Gemini API (for ai-multimodal, docs-seeker skills)
+# Get from: https://aistudio.google.com/apikey
+GEMINI_API_KEY=
+
+# Vertex AI Configuration (Optional alternative to AI Studio)
+# GEMINI_USE_VERTEX=true
+# VERTEX_PROJECT_ID=
+# VERTEX_LOCATION=us-central1
+
+# OpenAI API Key (if using OpenAI-based skills)
+# OPENAI_API_KEY=
+
+# Anthropic API Key (if using Claude API directly)
+# ANTHROPIC_API_KEY=
+
+# ============================================
+# Development & CI/CD
+# ============================================
+# NODE_ENV=development
+# DEBUG=false
+# LOG_LEVEL=info
+
+# ============================================
+# Project Configuration
+# ============================================
+# PROJECT_NAME=claudekit-engineer
+# ENVIRONMENT=local
+
+# ============================================
+# Example Usage Scenarios
+# ============================================
+# Scenario 1: Global default for all skills
+# .claude/.env (this file):                GEMINI_API_KEY=global-dev-key
+# Result: All skills use global-dev-key
+#
+# Scenario 2: Override for all skills
+# .claude/.env (this file):                GEMINI_API_KEY=global-dev-key
+# .claude/skills/.env:                     GEMINI_API_KEY=skills-prod-key
+# Result: All skills use skills-prod-key
+#
+# Scenario 3: Skill-specific override
+# .claude/.env (this file):                GEMINI_API_KEY=global-key
+# .claude/skills/.env:                     GEMINI_API_KEY=shared-key
+# .claude/skills/ai-multimodal/.env:       GEMINI_API_KEY=high-quota-key
+# Result: ai-multimodal uses high-quota-key, other skills use shared-key
+#
+# Scenario 4: Runtime testing
+# export GEMINI_API_KEY=test-key
+# Result: All skills use test-key regardless of config files
+#
+# Priority: runtime > skill-specific > shared > global (this file)
+</file>
+
+<file path="app/_layout.tsx">
+import '../global.css';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
+export default function RootLayout() {
+  return (
+    <>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#000000' },
+        }}
+      />
+    </>
+  );
+}
+</file>
+
+<file path="app/index.tsx">
+import { View, Text } from 'react-native';
+
+export default function IndexScreen() {
+  return (
+    <View className="flex-1 bg-background items-center justify-center">
+      <Text className="text-text-primary text-2xl font-bold mb-2">My2Light</Text>
+      <Text className="text-text-secondary">Phase 1: Foundation Complete</Text>
+      <Text className="text-text-secondary text-sm mt-4">Ready for Phase 2</Text>
+    </View>
+  );
+}
+</file>
+
+<file path="src/lib/constants.ts">
+export const COLORS = {
+  background: '#000000',
+  surface: '#1C1C1E',
+  surfaceElevated: '#2C2C2E',
+  primary: '#FF3B30',
+  secondary: '#FFD60A',
+  accent: '#0A84FF',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#8E8E93',
+  success: '#30D158',
+  warning: '#FF9F0A',
+  error: '#FF453A',
+} as const;
+
+export const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+} as const;
+
+export const VIDEO = {
+  defaultHighlightDuration: 5, // seconds
+  maxClipDuration: 60,
+  minClipDuration: 1,
+  speedOptions: [0.5, 0.75, 1, 1.25, 1.5, 2],
+} as const;
+</file>
+
+<file path="src/lib/storage.ts">
+// MMKV Storage wrapper
+// Note: Requires native build (expo prebuild) to work properly
+let MMKV: any;
+try {
+  // @ts-ignore - MMKV requires native modules
+  MMKV = require('react-native-mmkv').MMKV;
+} catch (e) {
+  // Fallback for type checking before native build
+  MMKV = class {
+    constructor() {}
+    getString() { return null; }
+    set() {}
+    delete() {}
+  };
+}
+
+export const storage = new MMKV({
+  id: 'my2light-storage',
+});
+
+export const StorageKeys = {
+  AUTH_TOKEN: 'auth_token',
+  USER_ID: 'user_id',
+  VIDEOS: 'videos',
+  SETTINGS: 'settings',
+} as const;
+
+export function getJSON<T>(key: string): T | null {
+  try {
+    const value = storage.getString(key);
+    if (!value) return null;
+    return JSON.parse(value) as T;
+  } catch (error) {
+    console.error(`Failed to parse JSON for key "${key}":`, error);
+    // Delete corrupted data to prevent repeated errors
+    storage.delete(key);
+    return null;
+  }
+}
+
+export function setJSON<T>(key: string, value: T): void {
+  try {
+    storage.set(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Failed to set JSON for key "${key}":`, error);
+    throw error; // Re-throw so caller knows the operation failed
+  }
+}
+</file>
+
+<file path="src/types/index.ts">
+export type VideoId = string;
+export type HighlightId = string;
+
+export interface Video {
+  id: VideoId;
+  uri: string;
+  duration: number;
+  createdAt: Date;
+  thumbnailUri?: string;
+  highlights: Highlight[];
+}
+
+export interface Highlight {
+  id: HighlightId;
+  videoId: VideoId;
+  timestamp: number;
+  duration: number;
+  label?: string;
+}
+
+export interface Clip {
+  id: string;
+  videoId: VideoId;
+  startTime: number;
+  endTime: number;
+  speed: number;
+}
+
+export interface Reel {
+  id: string;
+  clips: Clip[];
+  musicUri?: string;
+  createdAt: Date;
+}
+</file>
+
+<file path=".env.example">
+# Supabase Configuration
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+
+# Optional: Sentry (Error Tracking)
+# EXPO_PUBLIC_SENTRY_DSN=your-sentry-dsn
+</file>
+
+<file path=".gitignore">
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env
+.env.local
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android
+</file>
+
+<file path=".repomixignore">
+docs/*
+plans/*
+assets/*
+dist/*
+coverage/*
+build/*
+ios/*
+android/*
+tests/*
+__tests__/*
+__pycache__/*
+node_modules/*
+
+.opencode/*
+.claude/*
+.serena/*
+.pnpm-store/*
+.github/*
+.dart_tool/*
+.idea/*
+.husky/*
+.venv/*
+</file>
+
+<file path="app.json">
+{
+  "expo": {
+    "name": "My2Light",
+    "slug": "my2light-v2",
+    "scheme": "my2light",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#000000",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow My2Light to access your camera for recording matches.",
+          "microphonePermission": "Allow My2Light to access your microphone for audio recording.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow My2Light to save videos to your library.",
+          "savePhotosPermission": "Allow My2Light to save videos to your library.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
+  }
+}
+</file>
+
+<file path="babel.config.js">
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: [
+      ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
+      'nativewind/babel',
+    ],
+  };
+};
+</file>
+
+<file path="CLAUDE.md">
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Role & Responsibilities
+
+Your role is to analyze user requirements, delegate tasks to appropriate sub-agents, and ensure cohesive delivery of features that meet specifications and architectural standards.
+
+## Workflows
+
+- Primary workflow: `./.claude/workflows/primary-workflow.md`
+- Development rules: `./.claude/workflows/development-rules.md`
+- Orchestration protocols: `./.claude/workflows/orchestration-protocol.md`
+- Documentation management: `./.claude/workflows/documentation-management.md`
+- And other workflows: `./.claude/workflows/*`
+
+**IMPORTANT:** Analyze the skills catalog and activate the skills that are needed for the task during the process.
+**IMPORTANT:** You must follow strictly the development rules in `./.claude/workflows/development-rules.md` file.
+**IMPORTANT:** Before you plan or proceed any implementation, always read the `./README.md` file first to get context.
+**IMPORTANT:** Sacrifice grammar for the sake of concision when writing reports.
+**IMPORTANT:** In reports, list any unresolved questions at the end, if any.
+
+## Python Scripts (Skills)
+
+When running Python scripts from `.claude/skills/`, use the venv Python interpreter:
+- **Linux/macOS:** `.claude/skills/.venv/bin/python3 scripts/xxx.py`
+- **Windows:** `.claude\skills\.venv\Scripts\python.exe scripts\xxx.py`
+
+This ensures packages installed by `install.sh` (google-genai, pypdf, etc.) are available.
+
+## Documentation Management
+
+We keep all important docs in `./docs` folder and keep updating them, structure like below:
+
+```
+./docs
+├── project-overview-pdr.md
+├── code-standards.md
+├── codebase-summary.md
+├── design-guidelines.md
+├── deployment-guide.md
+├── system-architecture.md
+└── project-roadmap.md
+```
+
+**IMPORTANT:** *MUST READ* and *MUST COMPLY* all *INSTRUCTIONS* in project `./CLAUDE.md`, especially *WORKFLOWS* section is *CRITICALLY IMPORTANT*, this rule is *MANDATORY. NON-NEGOTIABLE. NO EXCEPTIONS. MUST REMEMBER AT ALL TIMES!!!*
+</file>
+
+<file path="global.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</file>
+
+<file path="metro.config.js">
+const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
+
+const config = getDefaultConfig(__dirname);
+
+module.exports = withNativeWind(config, { input: './global.css' });
+</file>
+
+<file path="nativewind-env.d.ts">
+/// <reference types="nativewind/types" />
+</file>
+
+<file path="package.json">
+{
+  "name": "my2light-v2",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "@supabase/supabase-js": "^2.89.0",
+    "expo": "~54.0.30",
+    "expo-auth-session": "~7.0.10",
+    "expo-av": "~16.0.8",
+    "expo-camera": "~17.0.10",
+    "expo-constants": "~18.0.12",
+    "expo-crypto": "~15.0.8",
+    "expo-file-system": "~19.0.21",
+    "expo-linking": "~8.0.11",
+    "expo-media-library": "~18.2.1",
+    "expo-router": "~6.0.21",
+    "expo-sharing": "~14.0.8",
+    "expo-splash-screen": "~31.0.13",
+    "expo-status-bar": "~3.0.9",
+    "expo-web-browser": "~15.0.10",
+    "ffmpeg-kit-react-native": "^6.0.2",
+    "nativewind": "^4.2.1",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-mmkv": "^4.1.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "^5.6.2",
+    "tailwindcss": "^3.4.19",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "typescript": "~5.9.2"
+  },
+  "private": true
+}
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./app/**/*.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
+  presets: [require('nativewind/preset')],
+  theme: {
+    extend: {
+      colors: {
+        background: '#000000',
+        surface: '#1C1C1E',
+        'surface-elevated': '#2C2C2E',
+        primary: '#FF3B30',
+        secondary: '#FFD60A',
+        accent: '#0A84FF',
+        'text-primary': '#FFFFFF',
+        'text-secondary': '#8E8E93',
+        success: '#30D158',
+        warning: '#FF9F0A',
+        error: '#FF453A',
+      },
+    },
+  },
+  plugins: [],
+};
+</file>
+
+<file path="tsconfig.json">
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/features/*": [
+        "./src/features/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/stores/*": [
+        "./src/stores/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts"
+  ]
+}
+</file>
+
+</files>
