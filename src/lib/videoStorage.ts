@@ -3,20 +3,25 @@ import { Video, Highlight } from '@/types';
 import { VIDEO } from './constants';
 
 // Safely access documentDirectory with proper type checking
-const getDocumentDirectory = (): string => {
-  const dir = (FileSystem as any).documentDirectory;
-  if (!dir || typeof dir !== 'string') {
-    throw new Error('FileSystem.documentDirectory is not available. Make sure expo-file-system is properly installed.');
-  }
-  return dir;
+const getDocumentDirectory = (): string | null => {
+  return (FileSystem as any).documentDirectory ?? null;
 };
 
-const VIDEO_DIR = `${getDocumentDirectory()}videos/`;
+const getVideoDir = (): string => {
+  const dir = getDocumentDirectory();
+  // We MUST check if it's a string and not empty
+  if (dir && typeof dir === 'string') {
+    return `${dir}videos/`;
+  }
+  // Return a dummy path for non-native environments instead of throwing
+  return 'videos/';
+};
 
 export async function ensureVideoDirectory() {
-  const dirInfo = await FileSystem.getInfoAsync(VIDEO_DIR);
+  const videoDir = getVideoDir();
+  const dirInfo = await FileSystem.getInfoAsync(videoDir);
   if (!dirInfo.exists) {
-    await FileSystem.makeDirectoryAsync(VIDEO_DIR, { intermediates: true });
+    await FileSystem.makeDirectoryAsync(videoDir, { intermediates: true });
   }
 }
 
@@ -25,7 +30,7 @@ export function generateVideoId(): string {
 }
 
 export function getVideoPath(videoId: string): string {
-  return `${VIDEO_DIR}${videoId}.mp4`;
+  return `${getVideoDir()}${videoId}.mp4`;
 }
 
 export async function saveVideo(
@@ -54,7 +59,7 @@ export async function deleteVideo(videoId: string): Promise<void> {
 }
 
 export function getThumbnailPath(videoId: string): string {
-  return `${VIDEO_DIR}${videoId}_thumb.jpg`;
+  return `${getVideoDir()}${videoId}_thumb.jpg`;
 }
 
 export async function getVideoFileSize(videoId: string): Promise<number> {
