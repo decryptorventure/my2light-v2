@@ -16,6 +16,7 @@ interface VideoState {
   removeVideo: (id: VideoId) => void;
   addHighlight: (videoId: VideoId, highlight: Highlight) => void;
   removeHighlight: (videoId: VideoId, highlightId: HighlightId) => void;
+  refreshVideos: () => Promise<void>;
 
   // Recording actions
   startRecording: () => void;
@@ -75,6 +76,12 @@ export const useVideoStore = create<VideoState>()(
               : v
           ),
         })),
+
+      refreshVideos: async () => {
+        // Future: Fetch from Supabase
+        // For now, just trigger re-render
+        set((state) => ({ videos: [...state.videos] }));
+      },
 
       startRecording: () =>
         set({
