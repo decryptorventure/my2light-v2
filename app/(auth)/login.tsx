@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { OAuthButton } from '@/components/OAuthButton';
+import { EmailAuthForm } from '@/components/EmailAuthForm';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -20,10 +20,8 @@ export default function LoginScreen() {
         </Text>
       </View>
 
-      {/* OAuth Buttons */}
-      <View className="gap-4">
-        <OAuthButton provider="google" onSuccess={handleSignInSuccess} />
-      </View>
+      {/* Email/Password Form */}
+      <EmailAuthForm onSuccess={handleSignInSuccess} />
 
       {/* Terms */}
       <Text className="text-text-tertiary text-xs text-center mt-8">
