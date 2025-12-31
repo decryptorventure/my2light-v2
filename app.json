@@ -45,7 +45,8 @@
           "savePhotosPermission": "Allow My2Light to save videos to your library.",
           "isAccessMediaLocationEnabled": true
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }
