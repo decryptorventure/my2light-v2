@@ -11,8 +11,9 @@
 |-------|-------|
 | Date | 2025-12-31 |
 | Priority | P1 |
-| Status | Pending |
+| Status | Needs Fixes |
 | Effort | 8h |
+| Code Review | [Report](../reports/code-reviewer-251231-1123-phase3-recording-camera.md) |
 
 ## Key Insights
 - expo-camera v17 API has changed (CameraView component)
@@ -800,30 +801,58 @@ export default function GalleryTab() {
 ```
 
 ## Todo List
-- [ ] Create src/stores/videoStore.ts
-- [ ] Create src/lib/videoStorage.ts
-- [ ] Create src/hooks/useCamera.ts
-- [ ] Create src/hooks/useRecording.ts
-- [ ] Create src/features/record/CameraControls.tsx
-- [ ] Create src/features/record/RecordingTimer.tsx
-- [ ] Create src/features/record/HighlightIndicator.tsx
-- [ ] Create src/features/record/RecordScreen.tsx
-- [ ] Create app/(tabs)/record.tsx
-- [ ] Create app/(tabs)/gallery.tsx (placeholder)
+
+### Implementation (Complete)
+- [x] Create src/stores/videoStore.ts
+- [x] Create src/lib/videoStorage.ts
+- [x] Create src/hooks/useCamera.ts
+- [x] Create src/hooks/useRecording.ts
+- [x] Create src/features/record/CameraControls.tsx
+- [x] Create src/features/record/RecordingTimer.tsx
+- [x] Create src/features/record/HighlightIndicator.tsx
+- [x] Create src/features/record/RecordScreen.tsx
+- [x] Create app/(tabs)/record.tsx
+
+### Critical Fixes (Required Before Phase 4)
+- [ ] **C1:** Fix timer cleanup memory leak in useRecording.ts
+- [ ] **C2:** Fix stale closure in startRecording dependencies
+- [ ] **C3:** Remove unsafe FileSystem type casting
+- [ ] **C4:** Add error boundaries around camera components
+- [ ] **H5:** Fix getVideoFileSize API usage
+
+### High Priority Fixes (Before Production)
+- [ ] **H1:** Add video file size validation
+- [ ] **H2:** Fix timer accuracy using elapsed time
+- [ ] **H3:** Add camera mount delay for isReady state
+- [ ] **H4:** Add temp file cleanup on save failure
+- [ ] **H6:** Add store rehydration cleanup
+
+### Medium Priority (Recommended)
+- [ ] **M1:** Add accessibility labels to controls
+- [ ] **M2:** Replace emoji with Ionicons
+- [ ] **M3:** Add haptic feedback
+- [ ] **M5:** Use Math.floor for timestamp precision
+- [ ] **M6:** Fix Date serialization in video metadata
+
+### Testing
 - [ ] Test camera permissions flow
-- [ ] Test recording start/stop
-- [ ] Test highlight tagging
-- [ ] Test video file saving
-- [ ] Verify highlights persist in store
+- [ ] Test recording start/stop with fixes applied
+- [ ] Test highlight tagging accuracy
+- [ ] Test video file saving with validation
+- [ ] Verify highlights persist correctly
+- [ ] Test edge cases (background, rotation, low storage)
 
 ## Success Criteria
-- [ ] Camera preview renders full screen
-- [ ] Permissions request shows on first launch
-- [ ] Recording starts with visual feedback (timer, red dot)
-- [ ] Tap-to-tag creates highlight with animation
-- [ ] Stopping recording saves video to filesystem
-- [ ] Video metadata with highlights saved to store
-- [ ] Camera flip works when not recording
+- [x] Camera preview renders full screen
+- [x] Permissions request shows on first launch
+- [x] Recording starts with visual feedback (timer, red dot)
+- [x] Tap-to-tag creates highlight with animation
+- [⚠] Stopping recording saves video to filesystem (needs validation fix)
+- [⚠] Video metadata with highlights saved to store (needs stale closure fix)
+- [x] Camera flip works when not recording
+- [ ] All critical bugs (C1-C4) resolved
+- [ ] Error handling comprehensive
+- [ ] Manual test cases pass
 
 ## Risk Assessment
 | Risk | Likelihood | Impact | Mitigation |
